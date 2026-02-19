@@ -1,335 +1,343 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FunTimeX Anarchy</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Hewi | проекты</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      margin: 0;
-      background: #121212;
-      color: #eee;
-      font-family: 'Press Start 2P', cursive, monospace;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      color: #ff4b4b;
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px #880000;
-    }
-    p.description {
-      font-size: 1rem;
-      margin-bottom: 30px;
-      max-width: 600px;
-      line-height: 1.4;
-      color: #ccc;
-    }
-    .ip {
-      background: #222;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1.2rem;
-      letter-spacing: 0.1em;
-      margin-bottom: 30px;
-      user-select: all;
-      cursor: pointer;
-      transition: background 0.3s;
-      display: inline-block;
-    }
-    .ip:hover {
-      background: #ff4b4b;
-      color: #121212;
-    }
-    .btns {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 40px;
-    }
-    .btn {
-      background: #ff4b4b;
-      border: none;
-      color: #121212;
-      padding: 12px 24px;
-      font-weight: bold;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 0.8rem;
-      transition: background 0.3s;
-      box-shadow: 0 0 8px #ff4b4b88;
-    }
-    .btn:hover {
-      background: #cc3a3a;
-      box-shadow: 0 0 12px #cc3a3acc;
-    }
-    footer {
-      margin-top: auto;
-      padding: 10px;
-      font-size: 0.7rem;
-      color: #666;
-    }
-    .team {
-      background: #1e1e1e;
-      color: #eee;
-      border-radius: 12px;
-      max-width: 600px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 15px #ff4b4baa;
-      font-size: 0.9rem;
-      user-select: none;
-    }
-    .team h2 {
-      margin-top: 0;
-      color: #ff4b4b;
-      text-shadow: 1px 1px #880000;
-      font-size: 1.4rem;
-      margin-bottom: 15px;
-    }
-    .team-member {
-      margin-bottom: 12px;
-    }
-    .member-name {
-      font-weight: bold;
-      color: #ffa6a6;
-    }
-    .member-role {
-      color: #ccc;
-      font-style: italic;
-    }
-    .donate {
-      background: #1e1e1e;
-      color: #eee;
-      border-radius: 12px;
-      max-width: 600px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 0 15px #ff4b4baa;
-      font-size: 0.9rem;
-      user-select: none;
-    }
-    .donate h2 {
-      margin-top: 0;
-      color: #ff4b4b;
-      text-shadow: 1px 1px #880000;
-      font-size: 1.4rem;
-      margin-bottom: 15px;
-    }
-    .donate-pack {
-      background: #222;
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 0 8px #ff4b4b66;
-      cursor: default;
-    }
-    .pack-name {
-      font-weight: bold;
-      color: #ffa6a6;
-      font-size: 1rem;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-    .pack-price {
-      background: #ff4b4b;
-      color: #121212;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-    .pack-price:hover {
-      background: #cc3a3a;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0a0a0a;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-    /* Модальное окно */
-    .modal {
-      display: none; 
-      position: fixed; 
-      z-index: 1000; 
-      padding-top: 100px; 
-      left: 0;
-      top: 0;
-      width: 100%; 
-      height: 100%; 
-      overflow: auto; 
-      background-color: rgba(0,0,0,0.8);
-      font-family: 'Press Start 2P', cursive, monospace;
-    }
-    .modal-content {
-      background-color: #2a2a2a;
-      margin: auto;
-      padding: 20px;
-      border: 2px solid #ff4b4b;
-      border-radius: 12px;
-      max-width: 400px;
-      color: #eee;
-      text-align: left;
-      box-shadow: 0 0 15px #ff4b4baa;
-      position: relative;
-    }
-    .close-btn {
-      color: #ff4b4b;
-      font-weight: bold;
-      position: absolute;
-      right: 15px;
-      top: 10px;
-      font-size: 1.4rem;
-      cursor: pointer;
-      user-select: none;
-      transition: color 0.3s;
-    }
-    .close-btn:hover {
-      color: #ff8282;
-    }
-    .modal-content h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      color: #ff4b4b;
-      text-shadow: 1px 1px #880000;
-    }
-    .modal-content p {
-      font-size: 0.8rem;
-      line-height: 1.3;
-    }
-  </style>
+        /* Улучшенные анимированные частицы на фоне */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 40%, rgba(200, 0, 0, 0.15) 0%, transparent 30%),
+                        radial-gradient(circle at 80% 70%, rgba(150, 0, 0, 0.15) 0%, transparent 35%),
+                        radial-gradient(circle at 30% 80%, rgba(255, 50, 0, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 20%, rgba(180, 0, 0, 0.1) 0%, transparent 45%);
+            background-size: 250% 250%;
+            animation: particlesFlow 25s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes particlesFlow {
+            0% { background-position: 0% 0%; opacity: 0.3; }
+            50% { background-position: 100% 100%; opacity: 0.6; }
+            100% { background-position: 0% 100%; opacity: 0.3; }
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Заголовок с мощной пульсацией */
+        .main-title {
+            font-size: 4.2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: #fff0f0;
+            animation: titleBreathing 2.2s infinite alternate ease-in-out, fadeInDown 0.8s ease-out;
+            letter-spacing: 3px;
+            line-height: 1.1;
+        }
+
+        @keyframes titleBreathing {
+            0% { text-shadow: 0 0 20px rgba(255, 0, 0, 0.5); transform: scale(1); }
+            100% { text-shadow: 0 0 60px #ff4444, 0 0 30px #aa0000; transform: scale(1.03); }
+        }
+
+        /* Подзаголовок — просто "проекты" */
+        .subheadline {
+            font-size: 1.2rem;
+            margin-bottom: 35px;
+            color: #ffb3b3;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 300;
+            opacity: 0.9;
+            animation: fadeInUp 1.2s;
+            border-bottom: 1px solid rgba(200, 0, 0, 0.4);
+            padding-bottom: 12px;
+        }
+
+        /* Контейнеры секций */
+        .topic-section {
+            width: 100%;
+            margin-bottom: 35px;
+            animation: slideUp 0.7s backwards;
+        }
+
+        .topic-section:nth-of-type(1) { animation-delay: 0.1s; }
+        .topic-section:nth-of-type(2) { animation-delay: 0.3s; }
+
+        /* Заголовок темы */
+        .topic-title {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-left: 18px;
+            margin-bottom: 10px;
+            color: #ffb3b3;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+        }
+
+        /* Идеальные стеклянные кнопки */
+        .link-item {
+            display: block;
+            width: 100%;
+            padding: 18px 25px;
+            background: rgba(40, 0, 0, 0.65);
+            backdrop-filter: blur(14px) saturate(200%);
+            -webkit-backdrop-filter: blur(14px) saturate(200%);
+            border: 2px solid rgba(200, 0, 0, 0.6);
+            border-radius: 70px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.35rem;
+            font-weight: 500;
+            text-align: left;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.8), 0 0 18px rgba(255, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            animation: buttonRise 0.6s backwards;
+        }
+
+        .link-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Индивидуальные задержки для кнопок */
+        .topic-section:nth-of-type(1) .link-item { animation-delay: 0.15s; }
+        .topic-section:nth-of-type(2) .link-item:nth-child(2) { animation-delay: 0.35s; }
+        .topic-section:nth-of-type(2) .link-item:nth-child(3) { animation-delay: 0.55s; }
+
+        @keyframes buttonRise {
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .link-item:hover {
+            background: rgba(140, 0, 0, 0.8);
+            border-color: #ff5e5e;
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 25px 45px rgba(255, 0, 0, 0.7), 0 0 35px #ff0000;
+        }
+
+        /* Анимированный градиент подложки */
+        .link-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(120deg, #ff1a1a, #660000, #ff4d4d, #ff1a1a);
+            background-size: 300% 300%;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+            border-radius: 70px;
+        }
+
+        .link-item:hover::before {
+            opacity: 0.5;
+            animation: gradientFlow 1.8s infinite alternate;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Световая волна */
+        .link-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 150%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transition: left 0.7s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+
+        .link-item:hover::after {
+            left: 100%;
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-right: 18px;
+            width: 40px;
+            text-align: center;
+            filter: drop-shadow(0 3px 8px rgba(255, 0, 0, 0.8));
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+
+        .link-item:hover .icon {
+            transform: rotate(12deg) scale(1.15);
+        }
+
+        .link-text {
+            flex: 1;
+        }
+
+        .meta-info {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 4px;
+            color: #ffc2c2;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* Анимация появления секций */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Футер с тонкой анимацией */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+            color: #b77;
+            border-top: 1px solid rgba(180, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            animation: footerGlow 2s infinite alternate, footerFade 1.5s;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes footerGlow {
+            0% { text-shadow: 0 0 5px #b00; }
+            100% { text-shadow: 0 0 15px #f33; }
+        }
+
+        @keyframes footerFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Адаптация */
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 3.2rem;
+            }
+            .subheadline {
+                font-size: 1rem;
+                letter-spacing: 3px;
+                margin-bottom: 25px;
+            }
+            .link-item {
+                padding: 16px 22px;
+                font-size: 1.2rem;
+            }
+            .icon {
+                font-size: 1.7rem;
+                margin-right: 14px;
+            }
+            .topic-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="content">
+        <h1 class="main-title">Hewi</h1>
+        <div class="subheadline">проекты</div>
 
-  <h1>FunTimeX Anarchy</h1>
+        <!-- Секция SnowFune -->
+        <div class="topic-section">
+            <div class="topic-title">❄️ SNOWFUNE</div>
+            <a href="https://t.me/SnowFune" target="_blank" rel="noopener noreferrer" class="link-item">
+                <span class="icon">❄️</span>
+                <span class="link-text">
+                    SnowFune
+                    <div class="meta-info">канал</div>
+                </span>
+            </a>
+        </div>
 
-  <p class="description">
-    Настоящий анархичный Minecraft сервер.<br />
-    Версия: 1.16.5
-  </p>
-
-  <div class="ip" id="ip" title="Нажми, чтобы скопировать">
-    В разработке
-  </div>
-
-  <div class="btns">
-    <a href="minecraft://play.funtimex.fun" class="btn">Присоединиться</a>
-    <button class="btn" onclick="copyIP()">Скопировать IP</button>
-    <a href="Скоро" class="btn" target="_blank" rel="noopener">Discord</a>
-  </div>
-
-  <!-- Донат с модалками -->
-  <div class="donate">
-    <h2>Донат</h2>
-
-    <div class="donate-pack">
-      <div class="pack-name" onclick="openModal('novice')">Пакет "Новичок"</div>
-      <a href="https://t.me/MasterGameYTT" class="pack-price" target="_blank" rel="noopener">100 ₽</a>
+        <!-- Секция HEWI (Ihewi + Логово Hewi) -->
+        <div class="topic-section">
+            <div class="topic-title">🔥 HEWI</div>
+            <!-- Ihewi - контакт для связи -->
+            <a href="https://t.me/ihewi" target="_blank" rel="noopener noreferrer" class="link-item">
+                <span class="icon">🌊</span>
+                <span class="link-text">
+                    Ihewi
+                    <div class="meta-info">контакт для связи</div>
+                </span>
+            </a>
+            <!-- Логово Hewi - канал -->
+            <a href="https://t.me/+oXdOpt4CXOs2MmUy" target="_blank" rel="noopener noreferrer" class="link-item">
+                <span class="icon">🔥</span>
+                <span class="link-text">
+                    Логово Hewi
+                    <div class="meta-info">канал</div>
+                </span>
+            </a>
+        </div>
     </div>
 
-    <div class="donate-pack">
-      <div class="pack-name" onclick="openModal('warrior')">Пакет "Воин"</div>
-      <a href="https://t.me/MasterGameYTT" class="pack-price" target="_blank" rel="noopener">300 ₽</a>
-    </div>
-
-    <div class="donate-pack">
-      <div class="pack-name" onclick="openModal('legend')">Пакет "Легенда"</div>
-      <a href="https://t.me/MasterGameYTT" class="pack-price" target="_blank" rel="noopener">1000 ₽</a>
-    </div>
-
-    <p style="font-size: 0.75rem; margin-top: 10px; color: #999;">
-      Все донаты помогают развитию сервера. Спасибо за поддержку!
-    </p>
-  </div>
-
-  <div class="team">
-    <h2>Состав команды FunTimeX</h2>
-    <div class="team-member">
-      <span class="member-name">Даниил #турникмэн</span> — Владелец
-    </div>
-    <div class="team-member">
-      <span class="member-name">MasterGameYT</span> — Тех админ
-    </div>
-  </div>
-
-
-<div style="text-align: center; margin-bottom: 5px;">
-  <a href="https://discord.gg/kGu2G2G8zC" target="_blank" rel="noopener" style="color: #ff4b4b; margin: 0 15px; text-decoration: none;">Discord</a>
-  <a href="https://vk.com/club226697829" target="_blank" rel="noopener" style="color: #ff4b4b; margin: 0 15px; text-decoration: none;">ВК</a>
-  <a href="https://t.me/FunTimeXAnarchy" target="_blank" rel="noopener" style="color: #ff4b4b; margin: 0 15px; text-decoration: none;">Telegram</a>
-</div>
-
-
-  <footer>
-    &copy; 2025 FunTimeX | Все права использования приднадлежат MasterGameYT
-  </footer>
-
-  <!-- Модальные окна -->
-  <div id="modal-novice" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('novice')">&times;</span>
-      <h3>Пакет "Новичок"</h3>
-      <p>Позволяет получить стартовый набор ресурсов и небольшой бонус к опыту для быстрого развития на сервере.</p>
-    </div>
-  </div>
-
-  <div id="modal-warrior" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('warrior')">&times;</span>
-      <h3>Пакет "Воин"</h3>
-      <p>Включает продвинутые инструменты и оружие, а также бонус к защите и увеличенный инвентарь.</p>
-    </div>
-  </div>
-
-  <div id="modal-legend" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('legend')">&times;</span>
-      <h3>Пакет "Легенда"</h3>
-      <p>Максимальный пакет с эксклюзивными скинами, уникальными предметами и VIP-доступом к закрытым зонам сервера.</p>
-    </div>
-  </div>
-
-  <script>
-    function copyIP() {
-      const ipText = document.getElementById('ip').innerText;
-      navigator.clipboard.writeText(ipText).then(() => {
-        alert('IP адрес скопирован!');
-      });
-    }
-
-    document.getElementById('ip').addEventListener('click', copyIP);
-
-    function openModal(name) {
-      document.getElementById('modal-' + name).style.display = 'block';
-    }
-
-    function closeModal(name) {
-      document.getElementById('modal-' + name).style.display = 'none';
-    }
-
-    // Закрываем модалку при клике вне её контента
-    window.onclick = function(event) {
-      ['novice', 'warrior', 'legend'].forEach(name => {
-        const modal = document.getElementById('modal-' + name);
-        if (event.target === modal) {
-          modal.style.display = 'none';
-        }
-      });
-    };
-  </script>
-
+    <footer class="footer">
+        © 2026 HEWI
+    </footer>
 </body>
 </html>
