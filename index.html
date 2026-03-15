@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Hewi | проекты</title>
+    <!-- Font Awesome 6 (бесплатные иконки) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Montserrat + Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;800&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,9 +15,20 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg: #0b0c10;
+            --primary: #ff1a1a;
+            --primary-glow: #ff4d4d;
+            --accent: #ff9933;
+            --card-bg: rgba(20, 5, 5, 0.7);
+            --border-glow: rgba(255, 50, 50, 0.6);
+            --text-light: #ffffff;
+            --text-muted: #ffb8b8;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #0a0a0a;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
             color: white;
             min-height: 100vh;
             display: flex;
@@ -22,7 +37,7 @@
             position: relative;
         }
 
-        /* Улучшенные анимированные частицы на фоне */
+        /* Анимированный фон с движущимися полосами */
         body::before {
             content: '';
             position: fixed;
@@ -30,20 +45,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 40%, rgba(200, 0, 0, 0.15) 0%, transparent 30%),
-                        radial-gradient(circle at 80% 70%, rgba(150, 0, 0, 0.15) 0%, transparent 35%),
-                        radial-gradient(circle at 30% 80%, rgba(255, 50, 0, 0.1) 0%, transparent 40%),
-                        radial-gradient(circle at 70% 20%, rgba(180, 0, 0, 0.1) 0%, transparent 45%);
-            background-size: 250% 250%;
-            animation: particlesFlow 25s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(255, 30, 30, 0.2) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(200, 0, 0, 0.15) 0%, transparent 30%),
+                repeating-linear-gradient(45deg, rgba(255, 40, 40, 0.02) 0px, rgba(255, 40, 40, 0.02) 2px, transparent 2px, transparent 6px);
+            background-size: 200% 200%, cover, auto;
+            animation: bgShift 18s infinite alternate ease-in-out;
             pointer-events: none;
             z-index: 0;
         }
 
-        @keyframes particlesFlow {
-            0% { background-position: 0% 0%; opacity: 0.3; }
-            50% { background-position: 100% 100%; opacity: 0.6; }
-            100% { background-position: 0% 100%; opacity: 0.3; }
+        @keyframes bgShift {
+            0% { background-position: 0% 0%, 0% 0%, 0; }
+            100% { background-position: 100% 100%, 100% 100%, 0; }
         }
 
         .content {
@@ -53,138 +67,150 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            max-width: 500px;
+            max-width: 680px;
             margin: 0 auto;
             width: 100%;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
-        /* Заголовок с мощной пульсацией */
+        /* Заголовок с неоновым свечением */
         .main-title {
-            font-size: 4.2rem;
-            font-weight: 800;
-            margin-bottom: 5px;
-            color: #fff0f0;
-            animation: titleBreathing 2.2s infinite alternate ease-in-out, fadeInDown 0.8s ease-out;
-            letter-spacing: 3px;
-            line-height: 1.1;
-        }
-
-        @keyframes titleBreathing {
-            0% { text-shadow: 0 0 20px rgba(255, 0, 0, 0.5); transform: scale(1); }
-            100% { text-shadow: 0 0 60px #ff4444, 0 0 30px #aa0000; transform: scale(1.03); }
-        }
-
-        /* Подзаголовок — просто "проекты" */
-        .subheadline {
-            font-size: 1.2rem;
-            margin-bottom: 35px;
-            color: #ffb3b3;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 0;
+            color: #fff;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 8px;
+            animation: neonPulse 2s infinite alternate, fadeInDown 1s;
+            text-shadow: 
+                0 0 10px #ff3333,
+                0 0 20px #ff3333,
+                0 0 40px #ff1a1a,
+                0 0 80px #ff1a1a;
+        }
+
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 5px #ff4d4d, 0 0 15px #ff4d4d, 0 0 30px #ff1a1a, 0 0 60px #ff1a1a; }
+            100% { text-shadow: 0 0 10px #ff6666, 0 0 25px #ff6666, 0 0 50px #ff3333, 0 0 100px #ff3333; }
+        }
+
+        .subheadline {
+            font-size: 1.4rem;
+            margin-bottom: 45px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 8px;
             font-weight: 300;
             opacity: 0.9;
             animation: fadeInUp 1.2s;
-            border-bottom: 1px solid rgba(200, 0, 0, 0.4);
-            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(255, 60, 60, 0.5);
+            padding-bottom: 15px;
+            display: inline-block;
         }
 
-        /* Контейнеры секций */
+        /* Секции */
         .topic-section {
             width: 100%;
-            margin-bottom: 35px;
-            animation: slideUp 0.7s backwards;
+            margin-bottom: 45px;
+            animation: slideUp 0.8s backwards;
+            border-left: 3px solid var(--primary);
+            padding-left: 15px;
         }
 
         .topic-section:nth-of-type(1) { animation-delay: 0.1s; }
-        .topic-section:nth-of-type(2) { animation-delay: 0.3s; }
+        .topic-section:nth-of-type(2) { animation-delay: 0.2s; }
+        .topic-section:nth-of-type(3) { animation-delay: 0.3s; }
 
-        /* Заголовок темы */
         .topic-title {
-            font-size: 1.3rem;
-            font-weight: 400;
-            margin-left: 18px;
-            margin-bottom: 10px;
-            color: #ffb3b3;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-left: 5px;
+            margin-bottom: 18px;
+            color: #ffcccc;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(255, 30, 30, 0.6);
         }
 
-        /* Идеальные стеклянные кнопки */
+        /* Стили кнопок с неоновой обводкой */
         .link-item {
-            display: block;
-            width: 100%;
-            padding: 18px 25px;
-            background: rgba(40, 0, 0, 0.65);
-            backdrop-filter: blur(14px) saturate(200%);
-            -webkit-backdrop-filter: blur(14px) saturate(200%);
-            border: 2px solid rgba(200, 0, 0, 0.6);
-            border-radius: 70px;
-            color: white;
-            text-decoration: none;
-            font-size: 1.35rem;
-            font-weight: 500;
-            text-align: left;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.8), 0 0 18px rgba(255, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
-            animation: buttonRise 0.6s backwards;
+            width: 100%;
+            padding: 20px 28px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid transparent;
+            border-radius: 60px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.8),
+                0 0 15px rgba(255, 0, 0, 0.3),
+                inset 0 0 10px rgba(255, 100, 100, 0.2);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            animation: buttonRise 0.7s backwards;
+            border-image: none;
+            border-bottom: 3px solid var(--border-glow);
         }
 
         .link-item:last-child {
             margin-bottom: 0;
         }
 
-        /* Индивидуальные задержки для кнопок */
-        .topic-section:nth-of-type(1) .link-item { animation-delay: 0.15s; }
-        .topic-section:nth-of-type(2) .link-item:nth-child(2) { animation-delay: 0.35s; }
-        .topic-section:nth-of-type(2) .link-item:nth-child(3) { animation-delay: 0.55s; }
-
-        @keyframes buttonRise {
-            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
         .link-item:hover {
-            background: rgba(140, 0, 0, 0.8);
-            border-color: #ff5e5e;
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 25px 45px rgba(255, 0, 0, 0.7), 0 0 35px #ff0000;
+            background: rgba(120, 10, 10, 0.8);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(255, 0, 0, 0.6),
+                0 0 30px #ff3333,
+                inset 0 0 15px #ff6666;
+            border-bottom-color: #ff8888;
         }
 
-        /* Анимированный градиент подложки */
-        .link-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(120deg, #ff1a1a, #660000, #ff4d4d, #ff1a1a);
-            background-size: 300% 300%;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: -1;
-            border-radius: 70px;
+        .link-item i {
+            font-size: 2.5rem;
+            margin-right: 22px;
+            width: 45px;
+            text-align: center;
+            color: #fff;
+            filter: drop-shadow(0 0 8px #ff5555);
+            transition: transform 0.4s ease, filter 0.3s;
         }
 
-        .link-item:hover::before {
-            opacity: 0.5;
-            animation: gradientFlow 1.8s infinite alternate;
+        .link-item:hover i {
+            transform: rotate(8deg) scale(1.2);
+            filter: drop-shadow(0 0 15px #ff8888);
         }
 
-        @keyframes gradientFlow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+        .link-text {
+            flex: 1;
         }
 
-        /* Световая волна */
+        .link-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-info {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 5px;
+            color: #ffd1d1;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Анимация бегущей волны (hover effect) */
         .link-item::after {
             content: '';
             position: absolute;
@@ -200,42 +226,15 @@
             left: 100%;
         }
 
-        .icon {
-            font-size: 2rem;
-            margin-right: 18px;
-            width: 40px;
-            text-align: center;
-            filter: drop-shadow(0 3px 8px rgba(255, 0, 0, 0.8));
-            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-
-        .link-item:hover .icon {
-            transform: rotate(12deg) scale(1.15);
-        }
-
-        .link-text {
-            flex: 1;
-        }
-
-        .meta-info {
-            font-size: 0.75rem;
-            opacity: 0.7;
-            margin-top: 4px;
-            color: #ffc2c2;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-
-        /* Анимация появления секций */
+        /* Анимации */
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes buttonRise {
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         @keyframes fadeInUp {
@@ -248,24 +247,20 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Футер с тонкой анимацией */
+        /* Футер с неоном */
         .footer {
             text-align: center;
-            padding: 20px;
-            font-size: 1rem;
-            color: #b77;
-            border-top: 1px solid rgba(180, 0, 0, 0.3);
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            animation: footerGlow 2s infinite alternate, footerFade 1.5s;
+            padding: 25px;
+            font-size: 1.1rem;
+            color: #dbb;
+            border-top: 1px solid rgba(255, 50, 50, 0.3);
+            background: rgba(10, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            animation: footerFade 1.5s;
             position: relative;
-            z-index: 1;
-        }
-
-        @keyframes footerGlow {
-            0% { text-shadow: 0 0 5px #b00; }
-            100% { text-shadow: 0 0 15px #f33; }
+            z-index: 2;
+            text-shadow: 0 0 8px #ff4444;
         }
 
         @keyframes footerFade {
@@ -273,26 +268,32 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* Адаптация */
+        /* Мобильная адаптация */
         @media (max-width: 480px) {
             .main-title {
-                font-size: 3.2rem;
+                font-size: 3.6rem;
+                letter-spacing: 4px;
             }
             .subheadline {
-                font-size: 1rem;
-                letter-spacing: 3px;
-                margin-bottom: 25px;
+                font-size: 1.1rem;
+                letter-spacing: 5px;
+                margin-bottom: 35px;
             }
             .link-item {
-                padding: 16px 22px;
+                padding: 16px 20px;
                 font-size: 1.2rem;
             }
-            .icon {
-                font-size: 1.7rem;
-                margin-right: 14px;
+            .link-item i {
+                font-size: 2rem;
+                margin-right: 15px;
+                width: 35px;
+            }
+            .link-title {
+                font-size: 1.3rem;
             }
             .topic-title {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
+                margin-left: 5px;
             }
         }
     </style>
@@ -302,44 +303,56 @@
         <h1 class="main-title">Hewi</h1>
         <div class="subheadline">проекты</div>
 
-        <!-- Секция SnowFune -->
+        <!-- Проекты которым я помогаю -->
         <div class="topic-section">
-            <div class="topic-title">Проекты которым я помогаю</div>
+            <div class="topic-title">🤝 помощь проектам</div>
             <a href="https://t.me/SnowFune" target="_blank" rel="noopener noreferrer" class="link-item">
-                <span class="icon">❄️</span>
+                <i class="fas fa-snowflake"></i>
                 <span class="link-text">
-                    SnowFune
+                    <span class="link-title">SnowFune</span>
                     <div class="meta-info">Майнкрафт канал</div>
                 </span>
             </a>
         </div>
 
-        <!-- Секция HEWI (Ihewi + Логово Hewi) -->
+        <!-- HEWI основные -->
         <div class="topic-section">
             <div class="topic-title">🔥 HEWI</div>
-            <!-- Ihewi - контакт для связи -->
             <a href="https://t.me/ihewi" target="_blank" rel="noopener noreferrer" class="link-item">
-                <span class="icon">🌊</span>
+                <i class="fas fa-water"></i>
                 <span class="link-text">
-                    Ihewi
+                    <span class="link-title">Ihewi</span>
                     <div class="meta-info">контакт для связи</div>
                 </span>
             </a>
-            <!-- Логово Hewi - канал -->
             <a href="https://t.me/+oXdOpt4CXOs2MmUy" target="_blank" rel="noopener noreferrer" class="link-item">
-                <span class="icon">🔥</span>
+                <i class="fas fa-fire"></i>
                 <span class="link-text">
-                    Логово Hewi
+                    <span class="link-title">Логово Hewi</span>
                     <div class="meta-info">канал</div>
+                </span>
+            </a>
+        </div>
+
+        <!-- Поддержка -->
+        <div class="topic-section">
+            <div class="topic-title">💖 поддержать</div>
+            <a href="https://www.donationalerts.com/r/hewi_official" target="_blank" rel="noopener noreferrer" class="link-item">
+                <i class="fas fa-hand-holding-heart"></i>
+                <span class="link-text">
+                    <span class="link-title">DonationAlerts</span>
+                    <div class="meta-info">поддержать автора</div>
                 </span>
             </a>
         </div>
     </div>
 
     <footer class="footer">
-        © 2026 HEWI сделано с ❤️
+        © <span id="current-year"></span> HEWI сделано с <i class="fas fa-heart" style="color: #ff5555; text-shadow: 0 0 8px red;"></i>
     </footer>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
-
-
