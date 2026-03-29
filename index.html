@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hewi | проекты</title>
     <!-- Font Awesome 6 (бесплатные иконки) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -13,6 +13,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            cursor: none;
         }
 
         :root {
@@ -24,6 +25,19 @@
             --border-glow: rgba(255, 50, 50, 0.6);
             --text-light: #ffffff;
             --text-muted: #ffb8b8;
+            --cursor-size: 20px;
+            --cursor-hover-size: 50px;
+        }
+
+        [data-theme="light"] {
+            --bg: #f0f0f0;
+            --primary: #ff3333;
+            --primary-glow: #ff6666;
+            --accent: #ffaa55;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --border-glow: rgba(255, 80, 80, 0.5);
+            --text-light: #1a1a1a;
+            --text-muted: #cc4444;
         }
 
         body {
@@ -35,6 +49,52 @@
             flex-direction: column;
             overflow-x: hidden;
             position: relative;
+            transition: all 0.5s ease;
+        }
+
+        /* Кастомный курсор */
+        .cursor {
+            position: fixed;
+            width: var(--cursor-size);
+            height: var(--cursor-size);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px var(--primary), inset 0 0 10px var(--primary);
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .cursor.hover {
+            width: var(--cursor-hover-size);
+            height: var(--cursor-hover-size);
+            background: rgba(255, 50, 50, 0.1);
+            border-color: var(--accent);
+        }
+
+        /* Canvas для частиц */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
 
         /* Анимированный фон с движущимися полосами */
@@ -74,6 +134,38 @@
             z-index: 2;
         }
 
+        /* Переключатель темы */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(255, 50, 50, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 0 30px var(--primary);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 50, 50, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 50, 50, 0.8); }
+        }
+
         /* Заголовок с неоновым свечением */
         .main-title {
             font-family: 'Montserrat', sans-serif;
@@ -89,6 +181,18 @@
                 0 0 20px #ff3333,
                 0 0 40px #ff1a1a,
                 0 0 80px #ff1a1a;
+            position: relative;
+        }
+
+        .typing-text::after {
+            content: '|';
+            animation: blink 1s infinite;
+            color: var(--primary);
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
         @keyframes neonPulse {
@@ -108,6 +212,33 @@
             border-bottom: 2px solid rgba(255, 60, 60, 0.5);
             padding-bottom: 15px;
             display: inline-block;
+        }
+
+        /* Счётчик посетителей */
+        .visitor-counter {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            padding: 10px 25px;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            box-shadow: 0 0 20px rgba(255, 50, 50, 0.3);
+            animation: fadeInUp 1.5s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .visitor-counter i {
+            color: var(--primary);
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
 
         /* Секции */
@@ -160,6 +291,8 @@
             animation: buttonRise 0.7s backwards;
             border-image: none;
             border-bottom: 3px solid var(--border-glow);
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
         .link-item:last-child {
@@ -168,7 +301,7 @@
 
         .link-item:hover {
             background: rgba(120, 10, 10, 0.8);
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-8px) scale(1.02) rotateX(5deg);
             box-shadow: 
                 0 20px 40px rgba(255, 0, 0, 0.6),
                 0 0 30px #ff3333,
@@ -226,6 +359,130 @@
             left: 100%;
         }
 
+        /* Кнопка наверх */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(255, 50, 50, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--primary);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px var(--primary);
+        }
+
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: -400px;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 15px 25px;
+            box-shadow: 0 0 30px rgba(255, 50, 50, 0.5);
+            z-index: 1001;
+            transition: right 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 350px;
+        }
+
+        .notification.show {
+            right: 20px;
+        }
+
+        .notification i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .notification-content h4 {
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .notification-content p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Мини-игра кликкер */
+        .clicker-game {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 15px 20px;
+            box-shadow: 0 0 20px rgba(255, 50, 50, 0.3);
+            z-index: 998;
+            animation: fadeInUp 1s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .clicker-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, var(--primary), #cc0000);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(255, 50, 50, 0.5);
+            transition: all 0.1s ease;
+            animation: heartbeat 2s infinite;
+        }
+
+        .clicker-btn:active {
+            transform: scale(0.9);
+            box-shadow: 0 2px 8px rgba(255, 50, 50, 0.3);
+        }
+
+        .clicker-score {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .clicker-score span {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
         /* Анимации */
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(40px); }
@@ -268,8 +525,38 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
+        /* Конфетти эффект */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            animation: confettiFall 3s linear forwards;
+            z-index: 997;
+            pointer-events: none;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
         /* Мобильная адаптация */
         @media (max-width: 480px) {
+            * {
+                cursor: auto;
+            }
+            
+            .cursor, .cursor-dot {
+                display: none;
+            }
+            
             .main-title {
                 font-size: 3.6rem;
                 letter-spacing: 4px;
@@ -295,18 +582,84 @@
                 font-size: 1.2rem;
                 margin-left: 5px;
             }
+            .theme-toggle {
+                width: 50px;
+                height: 50px;
+                top: 10px;
+                right: 10px;
+            }
+            .scroll-top {
+                bottom: 20px;
+                right: 20px;
+            }
+            .clicker-game {
+                bottom: 20px;
+                left: 20px;
+                padding: 10px 15px;
+            }
+            .clicker-btn {
+                width: 50px;
+                height: 50px;
+            }
+            .notification {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Кастомный курсор -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+    
+    <!-- Canvas для частиц -->
+    <canvas id="particles-canvas"></canvas>
+    
+    <!-- Переключатель темы -->
+    <button class="theme-toggle" id="theme-toggle" title="Переключить тему">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <!-- Счётчик посетителей -->
+    <div class="visitor-counter">
+        <i class="fas fa-eye"></i>
+        <span>Посетителей сегодня: <strong id="visitor-count">0</strong></span>
+    </div>
+    
+    <!-- Кнопка наверх -->
+    <button class="scroll-top" id="scroll-top" title="Наверх">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <!-- Мини-игра кликкер -->
+    <div class="clicker-game">
+        <button class="clicker-btn" id="clicker-btn">
+            <i class="fas fa-fire"></i>
+        </button>
+        <div class="clicker-score">
+            Кликов: <span id="click-count">0</span>
+        </div>
+    </div>
+    
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        <i class="fas fa-bell"></i>
+        <div class="notification-content">
+            <h4 id="notif-title">Заголовок</h4>
+            <p id="notif-message">Сообщение</p>
+        </div>
+    </div>
+
     <div class="content">
-        <h1 class="main-title">Hewi</h1>
+        <h1 class="main-title typing-text" data-text="Hewi"></h1>
         <div class="subheadline">проекты</div>
 
         <!-- Проекты которым я помогаю -->
         <div class="topic-section">
             <div class="topic-title">❄снег</div>
-            <a href="https://t.me/SnowFune" target="_blank" rel="noopener noreferrer" class="link-item">
+            <a href="https://t.me/SnowFune" target="_blank" rel="noopener noreferrer" class="link-item hover-target">
                 <i class="fas fa-snowflake"></i>
                 <span class="link-text">
                     <span class="link-title">SnowFune</span>
@@ -318,14 +671,14 @@
         <!-- HEWI основные -->
         <div class="topic-section">
             <div class="topic-title">🔥 HEWI</div>
-            <a href="https://t.me/ihewi" target="_blank" rel="noopener noreferrer" class="link-item">
+            <a href="https://t.me/ihewi" target="_blank" rel="noopener noreferrer" class="link-item hover-target">
                 <i class="fas fa-water"></i>
                 <span class="link-text">
                     <span class="link-title">Ihewi</span>
                     <div class="meta-info">контакт для связи</div>
                 </span>
             </a>
-            <a href="https://t.me/+oXdOpt4CXOs2MmUy" target="_blank" rel="noopener noreferrer" class="link-item">
+            <a href="https://t.me/+oXdOpt4CXOs2MmUy" target="_blank" rel="noopener noreferrer" class="link-item hover-target">
                 <i class="fas fa-fire"></i>
                 <span class="link-text">
                     <span class="link-title">Логово Hewi</span>
@@ -337,7 +690,7 @@
         <!-- Поддержка -->
         <div class="topic-section">
             <div class="topic-title">💖 поддержать</div>
-            <a href="https://www.donationalerts.com/r/hewi_official" target="_blank" rel="noopener noreferrer" class="link-item">
+            <a href="https://www.donationalerts.com/r/hewi_official" target="_blank" rel="noopener noreferrer" class="link-item hover-target">
                 <i class="fas fa-hand-holding-heart"></i>
                 <span class="link-text">
                     <span class="link-title">DonationAlerts</span>
@@ -352,7 +705,286 @@
     </footer>
 
     <script>
+        // Установка текущего года
         document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Кастомный курсор
+        const cursor = document.querySelector('.cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        const hoverTargets = document.querySelectorAll('.hover-target, .theme-toggle, .scroll-top, .clicker-btn');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+        });
+
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            target.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Частицы на canvas
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray = [];
+        const mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+
+            update() {
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+
+                // Взаимодействие с мышью
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < mouse.radius) {
+                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
+                        this.x += 3;
+                    }
+                    if (mouse.x > this.x && this.x > this.size * 10) {
+                        this.x -= 3;
+                    }
+                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
+                        this.y += 3;
+                    }
+                    if (mouse.y > this.y && this.y > this.size * 10) {
+                        this.y -= 3;
+                    }
+                }
+
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            const numberOfParticles = (canvas.width * canvas.height) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                const size = (Math.random() * 3) + 1;
+                const x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                const y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                const directionX = (Math.random() * 2) - 1;
+                const directionY = (Math.random() * 2) - 1;
+                const color = `rgba(255, ${Math.floor(Math.random() * 100)}, ${Math.floor(Math.random() * 100)}, 0.8)`;
+
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+        }
+
+        initParticles();
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+
+        // Эффект печатающегося текста
+        const typingElement = document.querySelector('.typing-text');
+        const text = typingElement.getAttribute('data-text');
+        let charIndex = 0;
+
+        function typeText() {
+            if (charIndex < text.length) {
+                typingElement.textContent = text.substring(0, charIndex + 1);
+                charIndex++;
+                setTimeout(typeText, 200);
+            }
+        }
+
+        setTimeout(typeText, 500);
+
+        // Переключатель темы
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        let isDarkTheme = true;
+
+        themeToggle.addEventListener('click', () => {
+            isDarkTheme = !isDarkTheme;
+            document.documentElement.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
+            themeIcon.className = isDarkTheme ? 'fas fa-moon' : 'fas fa-sun';
+            showNotification('Тема изменена', isDarkTheme ? 'Включена тёмная тема' : 'Включена светлая тема');
+            createConfetti();
+        });
+
+        // Уведомления
+        function showNotification(title, message) {
+            const notification = document.getElementById('notification');
+            const notifTitle = document.getElementById('notif-title');
+            const notifMessage = document.getElementById('notif-message');
+
+            notifTitle.textContent = title;
+            notifMessage.textContent = message;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Кнопка наверх
+        const scrollTopBtn = document.getElementById('scroll-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Счётчик посетителей (симуляция)
+        let visitorCount = Math.floor(Math.random() * 500) + 100;
+        const visitorCountElement = document.getElementById('visitor-count');
+
+        function animateCounter() {
+            let current = 0;
+            const increment = visitorCount / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= visitorCount) {
+                    current = visitorCount;
+                    clearInterval(timer);
+                }
+                visitorCountElement.textContent = Math.floor(current);
+            }, 30);
+        }
+
+        animateCounter();
+
+        // Мини-игра кликкер
+        let clickCount = 0;
+        const clickerBtn = document.getElementById('clicker-btn');
+        const clickCountElement = document.getElementById('click-count');
+
+        clickerBtn.addEventListener('click', (e) => {
+            clickCount++;
+            clickCountElement.textContent = clickCount;
+            
+            // Создаём мини-частицу при клике
+            createClickParticle(e.clientX, e.clientY);
+            
+            // Звуковой эффект (визуальный)
+            clickerBtn.style.transform = 'scale(0.85)';
+            setTimeout(() => clickerBtn.style.transform = 'scale(1)', 100);
+
+            // Поздравление на круглых числах
+            if (clickCount % 10 === 0) {
+                showNotification('🎉 Достижение!', `Вы сделали ${clickCount} кликов!`);
+                createConfetti();
+            }
+        });
+
+        function createClickParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'confetti';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.background = `hsl(${Math.random() * 60 + 330}, 100%, 50%)`;
+            particle.style.animation = 'confettiFall 1s linear forwards';
+            document.body.appendChild(particle);
+
+            setTimeout(() => particle.remove(), 1000);
+        }
+
+        // Конфетти эффект
+        function createConfetti() {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = `hsl(${Math.random() * 60 + 330}, 100%, 50%)`;
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 50);
+            }
+        }
+
+        // Уведомления при клике на ссылки
+        document.querySelectorAll('.link-item').forEach(link => {
+            link.addEventListener('click', () => {
+                const linkTitle = link.querySelector('.link-title').textContent;
+                showNotification('Переход...', `Открываем ${linkTitle}`);
+            });
+        });
+
+        // Параллакс эффект для карточек
+        document.querySelectorAll('.link-item').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+
+        // Приветственное уведомление
+        setTimeout(() => {
+            showNotification('Добро пожаловать!', 'Исследуйте проекты Hewi 🔥');
+        }, 1000);
     </script>
 </body>
 </html>
