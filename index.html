@@ -30,26 +30,34 @@
         }
 
         [data-theme="light"] {
-            --bg: #f0f0f0;
-            --primary: #ff3333;
-            --primary-glow: #ff6666;
-            --accent: #ffaa55;
-            --card-bg: rgba(255, 255, 255, 0.8);
-            --border-glow: rgba(255, 80, 80, 0.5);
-            --text-light: #1a1a1a;
-            --text-muted: #cc4444;
+            --bg: #1a1a2e;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary: #00d9ff;
+            --primary-glow: #00ffff;
+            --accent: #f093fb;
+            --card-bg: rgba(30, 30, 60, 0.75);
+            --border-glow: rgba(0, 217, 255, 0.6);
+            --text-light: #ffffff;
+            --text-muted: #b8d4ff;
+            --cursor-size: 20px;
+            --cursor-hover-size: 50px;
+            --shadow-color: rgba(0, 217, 255, 0.3);
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg);
-            color: white;
+            color: var(--text-light);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
             position: relative;
             transition: all 0.5s ease;
+        }
+
+        [data-theme="light"] body {
+            background: var(--bg-gradient);
         }
 
         /* Кастомный курсор */
@@ -113,6 +121,14 @@
             animation: bgShift 18s infinite alternate ease-in-out;
             pointer-events: none;
             z-index: 0;
+        }
+
+        [data-theme="light"] body::before {
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(102, 126, 234, 0.3) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.25) 0%, transparent 35%),
+                repeating-linear-gradient(45deg, rgba(0, 217, 255, 0.03) 0px, rgba(0, 217, 255, 0.03) 2px, transparent 2px, transparent 8px);
+            background-size: 200% 200%, cover, auto;
         }
 
         @keyframes bgShift {
@@ -847,8 +863,8 @@
             isDarkTheme = !isDarkTheme;
             document.documentElement.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
             themeIcon.className = isDarkTheme ? 'fas fa-moon' : 'fas fa-sun';
-            showNotification('Тема изменена', isDarkTheme ? 'Включена тёмная тема' : 'Включена светлая тема');
-            createConfetti();
+            showNotification('Тема изменена', isDarkTheme ? 'Включена тёмная тема 🌙' : 'Включена светлая тема ☀️');
+            updateCursorColor();
         });
 
         // Уведомления
@@ -985,6 +1001,393 @@
         setTimeout(() => {
             showNotification('Добро пожаловать!', 'Исследуйте проекты Hewi 🔥');
         }, 1000);
+
+        // 1. Гравитационный эффект для частиц (притяжение к мышке)
+        let gravityEnabled = true;
+        
+        // 2. Динамическое изменение цвета курсора в зависимости от фона
+        function updateCursorColor() {
+            const isLight = document.body.getAttribute('data-theme') === 'light';
+            cursor.style.borderColor = isLight ? '#00d9ff' : '#ff1a1a';
+            cursorDot.style.background = isLight ? '#00d9ff' : '#ff1a1a';
+        }
+        
+        // 3. Анимированные градиентные границы для карточек
+        const animatedBorderCards = document.querySelectorAll('.link-item');
+        animatedBorderCards.forEach(card => {
+            card.style.position = 'relative';
+            card.style.overflow = 'hidden';
+            
+            const gradientBorder = document.createElement('div');
+            gradientBorder.style.cssText = `
+                position: absolute;
+                top: -3px; left: -3px; right: -3px; bottom: -3px;
+                background: linear-gradient(45deg, #ff0080, #00d9ff, #f093fb, #ff0080);
+                background-size: 400% 400%;
+                border-radius: 63px;
+                z-index: -1;
+                animation: gradientShift 3s ease infinite;
+                opacity: 0;
+                transition: opacity 0.3s;
+            `;
+            card.appendChild(gradientBorder);
+            
+            card.addEventListener('mouseenter', () => gradientBorder.style.opacity = '1');
+            card.addEventListener('mouseleave', () => gradientBorder.style.opacity = '0');
+        });
+        
+        // Добавить анимацию gradientShift
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes gradientShift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // 4. Эффект риппла (волны) при клике на кнопки
+        document.querySelectorAll('.link-item').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size/2;
+                const y = e.clientY - rect.top - size/2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: rippleEffect 0.6s ease-out;
+                    pointer-events: none;
+                `;
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+        
+        // Добавить анимацию rippleEffect
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            @keyframes rippleEffect {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(rippleStyle);
+        
+        // 5. Плавающие частицы вокруг карточек при наведении
+        document.querySelectorAll('.link-item').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                for(let i = 0; i < 5; i++) {
+                    createFloatingParticle(this);
+                }
+            });
+        });
+        
+        function createFloatingParticle(container) {
+            const particle = document.createElement('div');
+            const isLight = document.body.getAttribute('data-theme') === 'light';
+            const colors = isLight ? ['#00d9ff', '#f093fb', '#667eea'] : ['#ff1a1a', '#ff4d4d', '#ff9933'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            particle.style.cssText = `
+                position: absolute;
+                width: ${Math.random() * 8 + 4}px;
+                height: ${Math.random() * 8 + 4}px;
+                background: ${randomColor};
+                border-radius: 50%;
+                pointer-events: none;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                box-shadow: 0 0 10px ${randomColor};
+                animation: floatUp ${Math.random() * 1 + 0.5}s ease-out forwards;
+            `;
+            
+            container.appendChild(particle);
+            setTimeout(() => particle.remove(), 2000);
+        }
+        
+        const floatStyle = document.createElement('style');
+        floatStyle.textContent = `
+            @keyframes floatUp {
+                0% {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-50px) scale(0);
+                }
+            }
+        `;
+        document.head.appendChild(floatStyle);
+        
+        // 6. Магнитный эффект для кнопок
+        document.querySelectorAll('.link-item').forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                this.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translate(0, 0)';
+            });
+        });
+        
+        // 7. Индикатор прогресса чтения страницы
+        const progressBar = document.createElement('div');
+        progressBar.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 10000;
+            transition: width 0.1s;
+            box-shadow: 0 0 10px var(--primary);
+        `;
+        document.body.appendChild(progressBar);
+        
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+        
+        // 8. Умное скрытие курсора при бездействии
+        let cursorTimeout;
+        document.addEventListener('mousemove', () => {
+            cursor.style.opacity = '1';
+            cursorDot.style.opacity = '1';
+            clearTimeout(cursorTimeout);
+            cursorTimeout = setTimeout(() => {
+                cursor.style.opacity = '0';
+                cursorDot.style.opacity = '0';
+            }, 2000);
+        });
+        
+        // 9. Звуковой эффект при переключении темы (опционально, визуально показываем)
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            createThemeSwitchEffect();
+        });
+        
+        function createThemeSwitchEffect() {
+            const flash = document.createElement('div');
+            const isLight = document.body.getAttribute('data-theme') === 'light';
+            flash.style.cssText = `
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
+                background: ${isLight ? 'rgba(0, 217, 255, 0.3)' : 'rgba(255, 26, 26, 0.3)'};
+                pointer-events: none;
+                z-index: 9998;
+                animation: themeFlash 0.5s ease-out forwards;
+            `;
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 500);
+        }
+        
+        const themeFlashStyle = document.createElement('style');
+        themeFlashStyle.textContent = `
+            @keyframes themeFlash {
+                0% { opacity: 1; }
+                100% { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(themeFlashStyle);
+        
+        // 10. Случайные искры при движении мыши
+        let sparkInterval;
+        document.addEventListener('mousemove', (e) => {
+            if(Math.random() > 0.7) {
+                createSpark(e.clientX, e.clientY);
+            }
+        });
+        
+        function createSpark(x, y) {
+            const spark = document.createElement('div');
+            const isLight = document.body.getAttribute('data-theme') === 'light';
+            const colors = isLight ? ['#00d9ff', '#f093fb', '#ffffff'] : ['#ff1a1a', '#ff4d4d', '#ffffff'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            spark.style.cssText = `
+                position: fixed;
+                left: ${x}px;
+                top: ${y}px;
+                width: ${Math.random() * 4 + 2}px;
+                height: ${Math.random() * 4 + 2}px;
+                background: ${randomColor};
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9997;
+                box-shadow: 0 0 8px ${randomColor};
+                animation: sparkFade 0.8s ease-out forwards;
+            `;
+            
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 50 + 30;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity;
+            
+            spark.animate([
+                { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+            ], {
+                duration: 800,
+                easing: 'ease-out'
+            });
+            
+            document.body.appendChild(spark);
+            setTimeout(() => spark.remove(), 800);
+        }
+        
+        // 11. Голографический эффект для заголовка
+        const mainTitle = document.querySelector('.main-title');
+        if(mainTitle) {
+            mainTitle.style.background = 'linear-gradient(180deg, #fff 0%, var(--primary) 50%, #fff 100%)';
+            mainTitle.style.backgroundSize = '100% 200%';
+            mainTitle.style.webkitBackgroundClip = 'text';
+            mainTitle.style.webkitTextFillColor = 'transparent';
+            mainTitle.style.animation = 'holoShift 3s ease-in-out infinite, neonPulse 2s infinite alternate';
+        }
+        
+        const holoStyle = document.createElement('style');
+        holoStyle.textContent = `
+            @keyframes holoShift {
+                0%, 100% { background-position: 0% 0%; }
+                50% { background-position: 0% 100%; }
+            }
+        `;
+        document.head.appendChild(holoStyle);
+        
+        // 12. Анимация пульсации для всех кнопок с разной фазой
+        document.querySelectorAll('.link-item').forEach((btn, index) => {
+            btn.style.animation = `buttonRise 0.7s backwards, softPulse ${2 + index * 0.3}s infinite`;
+        });
+        
+        const pulseStyle = document.createElement('style');
+        pulseStyle.textContent = `
+            @keyframes softPulse {
+                0%, 100% { box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 0, 0, 0.3); }
+                50% { box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 0, 0, 0.5); }
+            }
+        `;
+        document.head.appendChild(pulseStyle);
+        
+        // 13. Мини-превью ссылки при наведении (показывает URL)
+        document.querySelectorAll('.link-item').forEach(link => {
+            const preview = document.createElement('div');
+            preview.className = 'link-preview';
+            preview.style.cssText = `
+                position: absolute;
+                bottom: -30px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--card-bg);
+                backdrop-filter: blur(10px);
+                padding: 5px 15px;
+                border-radius: 15px;
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                border: 1px solid var(--border-glow);
+                opacity: 0;
+                transition: opacity 0.3s;
+                pointer-events: none;
+                white-space: nowrap;
+                z-index: 100;
+            `;
+            link.appendChild(preview);
+            
+            link.addEventListener('mouseenter', () => {
+                preview.textContent = link.href;
+                preview.style.opacity = '1';
+            });
+            link.addEventListener('mouseleave', () => {
+                preview.style.opacity = '0';
+            });
+        });
+        
+        // 14. Конфетти при достижении определённого счета в кликере
+        const originalClickerBtn = document.querySelector('.clicker-btn');
+        if(originalClickerBtn) {
+            originalClickerBtn.addEventListener('click', () => {
+                const scoreElement = document.querySelector('.clicker-score span');
+                if(scoreElement) {
+                    const score = parseInt(scoreElement.textContent);
+                    if(score % 50 === 0 && score > 0) {
+                        launchConfetti();
+                    }
+                }
+            });
+        }
+        
+        function launchConfetti() {
+            for(let i = 0; i < 30; i++) {
+                createConfetti();
+            }
+        }
+        
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            const colors = ['#ff1a1a', '#00d9ff', '#f093fb', '#ff9933', '#ffffff', '#667eea'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            confetti.style.cssText = `
+                position: fixed;
+                top: -10px;
+                left: ${Math.random() * 100}vw;
+                width: ${Math.random() * 10 + 5}px;
+                height: ${Math.random() * 10 + 5}px;
+                background: ${randomColor};
+                border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+                pointer-events: none;
+                z-index: 9996;
+                animation: confettiFall ${Math.random() * 2 + 2}s linear forwards;
+            `;
+            
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 4000);
+        }
+        
+        const confettiStyle = document.createElement('style');
+        confettiStyle.textContent = `
+            @keyframes confettiFall {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(100vh) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(confettiStyle);
+        
+        // 15. Интерактивная подсказка о теме (при первом посещении)
+        let hasSeenTip = localStorage.getItem('hasSeenThemeTip');
+        if(!hasSeenTip) {
+            setTimeout(() => {
+                showNotification('💡 Совет!', 'Переключи тему кнопкой справа сверху 🌙✨');
+                localStorage.setItem('hasSeenThemeTip', 'true');
+            }, 3000);
+        }
     </script>
 </body>
 </html>
